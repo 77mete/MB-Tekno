@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-mbtekno-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="MB Tekno - İşletmenizin dijital ve teknik çözüm ortağı. Web, mobil, QR menü yazılım çözümleri ve LED tabela, cihaz onarım donanım hizmetleri.">
-  <link rel="web icon" href="icon.png" type="image/png">
   <title>MB Tekno | Dijital ve Teknik Çözüm Ortağınız</title>
 
   <!-- Normalize CSS -->
@@ -673,6 +672,12 @@
       padding: 36px;
     }
 
+    .mbtekno-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
     .mbtekno-form-group {
       margin-bottom: 20px;
     }
@@ -946,21 +951,27 @@
     .mbtekno-cross { color: var(--mbtekno-color-text-muted); }
 
     /* ===== WhatsApp FAB ===== */
-    .mbtekno-whatsapp-fab {
+    .mbtekno-whatsapp-wrap {
       position: fixed;
       bottom: 24px;
       right: 24px;
       z-index: 1500;
+    }
+
+    .mbtekno-whatsapp-fab {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 14px 20px;
       background: #25d366;
       color: #fff;
+      border: none;
       border-radius: 999px;
+      font-family: var(--mbtekno-font-primary);
       font-weight: 600;
       font-size: 0.9375rem;
       box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
+      cursor: pointer;
       transition: transform var(--mbtekno-transition-fast), box-shadow var(--mbtekno-transition-fast);
     }
 
@@ -971,6 +982,77 @@
     }
 
     .mbtekno-whatsapp-fab i { font-size: 1.375rem; }
+
+    .mbtekno-whatsapp-menu {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      right: 0;
+      width: 280px;
+      background: var(--mbtekno-color-bg-alt);
+      border: 1px solid var(--mbtekno-color-border);
+      border-radius: var(--mbtekno-radius-lg);
+      box-shadow: 0 12px 40px var(--mbtekno-color-shadow);
+      padding: 8px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px) scale(0.96);
+      transition: opacity var(--mbtekno-transition-fast), transform var(--mbtekno-transition-fast), visibility var(--mbtekno-transition-fast);
+    }
+
+    .mbtekno-whatsapp-menu.mbtekno-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .mbtekno-whatsapp-menu-header {
+      padding: 12px 14px 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--mbtekno-color-text-muted);
+    }
+
+    .mbtekno-whatsapp-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--mbtekno-radius-md);
+      color: var(--mbtekno-color-text);
+      transition: background var(--mbtekno-transition-fast), transform var(--mbtekno-transition-fast);
+    }
+
+    .mbtekno-whatsapp-option:hover {
+      background: rgba(37, 211, 102, 0.1);
+      transform: translateX(-2px);
+      color: var(--mbtekno-color-text);
+    }
+
+    .mbtekno-whatsapp-option-avatar {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      border-radius: 50%;
+      font-family: var(--mbtekno-font-heading);
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .mbtekno-whatsapp-option-name {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      margin-bottom: 2px;
+    }
+
+    .mbtekno-whatsapp-option-role {
+      font-size: 0.75rem;
+      color: var(--mbtekno-color-text-muted);
+    }
 
     /* ===== Footer ===== */
     .mbtekno-footer {
@@ -1057,6 +1139,8 @@
       .mbtekno-footer-grid { grid-template-columns: 1fr; }
       .mbtekno-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
 
+      .mbtekno-form-row { grid-template-columns: 1fr; }
+
       .mbtekno-whatsapp-fab span { display: none; }
       .mbtekno-whatsapp-fab {
         width: 56px;
@@ -1064,6 +1148,11 @@
         padding: 0;
         justify-content: center;
         border-radius: 50%;
+      }
+
+      .mbtekno-whatsapp-menu {
+        width: calc(100vw - 48px);
+        max-width: 280px;
       }
     }
 
@@ -1093,7 +1182,7 @@
       </nav>
       <div class="mbtekno-header-actions">
         <button class="mbtekno-theme-toggle" id="mbteknoThemeToggle" aria-label="Tema değiştir">
-          <i class="fa-solid fa-moon" id="mbteknoThemeIcon"></i>
+          <i class="fa-solid fa-sun" id="mbteknoThemeIcon"></i>
         </button>
         <button class="mbtekno-menu-toggle" id="mbteknoMenuToggle" aria-label="Menüyü aç">
           <i class="fa-solid fa-bars"></i>
@@ -1195,7 +1284,7 @@
       <div class="mbtekno-container">
         <div class="mbtekno-section-header">
           <span class="mbtekno-section-label">Hakkımızda</span>
-          <h2 class="mbtekno-section-title">İşini İyi Yapan, Ulaşılabilir Mühendisler</h2>
+          <h2 class="mbtekno-section-title">İşini İyi Yapan, Ulaşılabilir Genç Yazılımcılar</h2>
           <p class="mbtekno-section-desc">MB Tekno, Mete ve Burak'ın ortak vizyonuyla kurulmuş; yazılım geliştirmeden donanım onarımına kadar uçtan uca teknoloji çözümleri sunan bir ekiptir.</p>
         </div>
 
@@ -1259,14 +1348,14 @@
               <div class="mbtekno-contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
               <div>
                 <strong>E-posta</strong>
-                <p style="color:var(--mbtekno-color-text-muted);margin:0">info@mbtekno.com</p>
+                <p style="color:var(--mbtekno-color-text-muted);margin:0">mbteknoinfo@gmail.com</p>
               </div>
             </div>
             <div class="mbtekno-contact-info-item">
               <div class="mbtekno-contact-info-icon"><i class="fa-solid fa-phone"></i></div>
               <div>
                 <strong>Telefon</strong>
-                <p style="color:var(--mbtekno-color-text-muted);margin:0">+90 5XX XXX XX XX</p>
+                <p style="color:var(--mbtekno-color-text-muted);margin:0">+90 552 843 14 11 - Mete<br>+90 506 167 33 72 - Burak</p>
               </div>
             </div>
             <div class="mbtekno-contact-info-item">
@@ -1285,15 +1374,21 @@
             </div>
           </div>
 
-          <form class="mbtekno-contact-form" id="mbteknoContactForm" action="https://formsubmit.co/info@mbtekno.com" method="POST">
+          <form class="mbtekno-contact-form" id="mbteknoContactForm" action="https://formsubmit.co/mbteknoinfo@gmail.com" method="POST">
             <input type="hidden" name="_subject" value="MB Tekno - Yeni İletişim Formu">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
             <input type="text" name="_honey" style="display:none">
 
-            <div class="mbtekno-form-group">
-              <label class="mbtekno-form-label" for="mbteknoFormName">İsim *</label>
-              <input type="text" class="mbtekno-form-input" id="mbteknoFormName" name="isim" required placeholder="Adınız Soyadınız">
+            <div class="mbtekno-form-row">
+              <div class="mbtekno-form-group">
+                <label class="mbtekno-form-label" for="mbteknoFormFirstName">Ad *</label>
+                <input type="text" class="mbtekno-form-input" id="mbteknoFormFirstName" name="ad" required placeholder="Adınız">
+              </div>
+              <div class="mbtekno-form-group">
+                <label class="mbtekno-form-label" for="mbteknoFormLastName">Soyad *</label>
+                <input type="text" class="mbtekno-form-input" id="mbteknoFormLastName" name="soyad" required placeholder="Soyadınız">
+              </div>
             </div>
             <div class="mbtekno-form-group">
               <label class="mbtekno-form-label" for="mbteknoFormPhone">Telefon *</label>
@@ -1311,6 +1406,7 @@
                 <option value="LED Tabela Üretim ve Montaj">LED Tabela Üretim ve Montaj</option>
                 <option value="Bilgisayar Bakım ve Onarım">Bilgisayar Bakım ve Onarım</option>
                 <option value="Telefon / Tablet Tamiri">Telefon / Tablet Tamiri</option>
+                <option value="Diğer">Diğer</option>
               </select>
             </div>
             <div class="mbtekno-form-group">
@@ -1340,10 +1436,29 @@
   </div>
 
   <!-- WhatsApp FAB -->
-  <a href="https://wa.me/905XXXXXXXXX?text=Merhaba%2C%20MB%20Tekno%20hizmetleri%20hakkında%20bilgi%20almak%20istiyorum." class="mbtekno-whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp'tan ulaşın">
-    <i class="fa-brands fa-whatsapp"></i>
-    <span>WhatsApp'tan Ulaşın</span>
-  </a>
+  <div class="mbtekno-whatsapp-wrap" id="mbteknoWhatsappWrap">
+    <div class="mbtekno-whatsapp-menu" id="mbteknoWhatsappMenu" role="menu" aria-label="WhatsApp iletişim seçenekleri">
+      <div class="mbtekno-whatsapp-menu-header">Kime ulaşmak istersiniz?</div>
+      <a href="https://wa.me/905528431411?text=Merhaba%20Mete%2C%20MB%20Tekno%20hizmetleri%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." class="mbtekno-whatsapp-option" target="_blank" rel="noopener noreferrer" role="menuitem">
+        <span class="mbtekno-whatsapp-option-avatar">M</span>
+        <span>
+          <div class="mbtekno-whatsapp-option-name">Mete</div>
+          <div class="mbtekno-whatsapp-option-role">Yazılım Geliştirici</div>
+        </span>
+      </a>
+      <a href="https://wa.me/905061673372?text=Merhaba%20Burak%2C%20MB%20Tekno%20hizmetleri%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." class="mbtekno-whatsapp-option" target="_blank" rel="noopener noreferrer" role="menuitem">
+        <span class="mbtekno-whatsapp-option-avatar">B</span>
+        <span>
+          <div class="mbtekno-whatsapp-option-name">Burak</div>
+          <div class="mbtekno-whatsapp-option-role">Donanım Uzmanı</div>
+        </span>
+      </a>
+    </div>
+    <button type="button" class="mbtekno-whatsapp-fab" id="mbteknoWhatsappFab" aria-label="WhatsApp iletişim menüsünü aç" aria-expanded="false" aria-haspopup="true">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>WhatsApp'tan Ulaşın</span>
+    </button>
+  </div>
 
   <!-- Footer -->
   <footer class="mbtekno-footer">
@@ -1636,7 +1751,7 @@
       hasPackages: false,
       detailSections: [
         { title: 'Hizmet Kapsamı', items: ['Keşif ve ölçüm', 'Tasarım ve görselleştirme', 'LED modül üretimi', 'Profesyonel montaj', 'Elektrik bağlantısı ve test', 'Garanti ve teknik destek'] },
-        { title: 'Tabela Türleri', items: ['Kutu harf LED tabela', 'Işıklı tabela', 'Dijital LED ekran', 'Neon flex tabela', 'Totem tabela', 'Cephe giydirme'] },
+        { title: 'Tabela Türleri', items: ['Işıklı tabela', 'Dijital LED ekran', 'Neon flex tabela',] },
         { title: 'Kimler İçin Uygun?', items: ['Yeni açılan işletmeler', 'Tabela yenilemek isteyen firmalar', 'Marka kimliğini güçlendirmek isteyenler', 'Gece görünürlüğüne ihtiyaç duyan mekanlar'] }
       ]
     },
@@ -1662,12 +1777,12 @@
       icon: 'fa-tablet-screen-button',
       shortDesc: 'Telefon ve tablet ekran, batarya ve donanım tamiri.',
       description: 'Telefon ve tablet tamiri hizmetimizle cihazlarınızı hızlı ve güvenilir şekilde onarıyoruz. Ekran değişimi, batarya değişimi, şarj soketi tamiri, kamera ve hoparlör onarımı gibi tüm donanım sorunlarında yanınızdayız. Orijinal ve kaliteli yedek parça kullanımı ile cihazınızın performansını koruyoruz.',
-      usageAreas: ['Akıllı Telefon', 'Tablet', 'iPad', 'Kırık Ekran', 'Batarya Şişmesi', 'Su Hasarı'],
+      usageAreas: ['Akıllı Telefon', 'Tablet', 'Kırık Ekran', 'Batarya Şişmesi'],
       hasPackages: false,
       detailSections: [
-        { title: 'Tamir Hizmetleri', items: ['Ekran (LCD/OLED) değişimi', 'Batarya değişimi', 'Şarj soketi tamiri', 'Kamera onarımı', 'Hoparlör ve mikrofon tamiri', 'Su hasarı onarımı'] },
-        { title: 'Ek Hizmetler', items: ['Cam koruyucu uygulama', 'Yazılım güncelleme', 'Veri yedekleme', 'Cihaz temizliği', 'Garanti belgesi'] },
-        { title: 'Kimler İçin Uygun?', items: ['Kırık ekranı olan kullanıcılar', 'Batarya sorunu yaşayanlar', 'Şarj almayan cihaz sahipleri', 'Su teması sonrası arızalanan cihazlar'] }
+        { title: 'Tamir Hizmetleri', items: ['Ekran (LCD/OLED) değişimi', 'Batarya değişimi', 'Şarj soketi tamiri', 'Kamera onarımı', 'Hoparlör ve mikrofon tamiri'] },
+        { title: 'Ek Hizmetler', items: ['Cam koruyucu uygulama', 'Cihaz temizliği',] },
+        { title: 'Kimler İçin Uygun?', items: ['Kırık ekranı olan kullanıcılar', 'Batarya sorunu yaşayanlar', 'Şarj almayan cihaz sahipleri'] }
       ]
     }
   };
@@ -1857,7 +1972,10 @@
 
   function initTheme() {
     var saved = localStorage.getItem('mbtekno-theme');
-    if (saved === 'dark') {
+    if (saved === 'light') {
+      document.documentElement.removeAttribute('data-mbtekno-theme');
+      themeIcon.className = 'fa-solid fa-moon';
+    } else {
       document.documentElement.setAttribute('data-mbtekno-theme', 'dark');
       themeIcon.className = 'fa-solid fa-sun';
     }
@@ -1965,6 +2083,32 @@
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
         btn.disabled = true;
       }
+    });
+  }
+
+  var whatsappFab = document.getElementById('mbteknoWhatsappFab');
+  var whatsappMenu = document.getElementById('mbteknoWhatsappMenu');
+  var whatsappWrap = document.getElementById('mbteknoWhatsappWrap');
+
+  function closeWhatsappMenu() {
+    if (!whatsappMenu || !whatsappFab) return;
+    whatsappMenu.classList.remove('mbtekno-open');
+    whatsappFab.setAttribute('aria-expanded', 'false');
+  }
+
+  if (whatsappFab && whatsappMenu) {
+    whatsappFab.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = whatsappMenu.classList.toggle('mbtekno-open');
+      whatsappFab.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (whatsappWrap && !whatsappWrap.contains(e.target)) closeWhatsappMenu();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && whatsappMenu.classList.contains('mbtekno-open')) closeWhatsappMenu();
     });
   }
 
