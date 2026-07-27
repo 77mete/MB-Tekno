@@ -717,6 +717,86 @@
       resize: vertical;
     }
 
+    /* ===== Success Modal ===== */
+    .mbtekno-success-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.92);
+      width: calc(100% - 32px);
+      max-width: 440px;
+      background: var(--mbtekno-color-bg-alt);
+      border: 1px solid var(--mbtekno-color-border);
+      border-radius: var(--mbtekno-radius-xl);
+      z-index: 2001;
+      opacity: 0;
+      visibility: hidden;
+      padding: 40px 32px 32px;
+      text-align: center;
+      transition: opacity var(--mbtekno-transition), transform var(--mbtekno-transition), visibility var(--mbtekno-transition);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+    }
+
+    .mbtekno-success-modal.mbtekno-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .mbtekno-success-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--mbtekno-color-success);
+      border-radius: 50%;
+      font-size: 2rem;
+      animation: mbtekno-success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+    }
+
+    @keyframes mbtekno-success-pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .mbtekno-success-title {
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .mbtekno-success-message {
+      font-size: 1rem;
+      color: var(--mbtekno-color-text-muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .mbtekno-success-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--mbtekno-color-border);
+      border-radius: var(--mbtekno-radius-sm);
+      background: var(--mbtekno-color-bg);
+      color: var(--mbtekno-color-text);
+      cursor: pointer;
+      transition: transform var(--mbtekno-transition-fast), border-color var(--mbtekno-transition-fast);
+    }
+
+    .mbtekno-success-close:hover {
+      transform: scale(1.05);
+      border-color: var(--mbtekno-color-primary);
+    }
+
     /* ===== Modal ===== */
     .mbtekno-modal-overlay {
       position: fixed;
@@ -1436,6 +1516,22 @@
     <div class="mbtekno-modal-body" id="mbteknoModalBody"></div>
   </div>
 
+  <!-- Success Modal -->
+  <div class="mbtekno-modal-overlay" id="mbteknoSuccessOverlay"></div>
+  <div class="mbtekno-success-modal" id="mbteknoSuccessModal" role="dialog" aria-modal="true" aria-labelledby="mbteknoSuccessTitle">
+    <button class="mbtekno-success-close" id="mbteknoSuccessClose" aria-label="Kapat">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="mbtekno-success-icon">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <h2 class="mbtekno-success-title" id="mbteknoSuccessTitle">Teşekkürler!</h2>
+    <p class="mbtekno-success-message">Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.</p>
+    <button type="button" class="mbtekno-btn mbtekno-btn-primary" id="mbteknoSuccessOk" style="width:100%">
+      <i class="fa-solid fa-check"></i> Tamam
+    </button>
+  </div>
+
   <!-- WhatsApp FAB -->
   <div class="mbtekno-whatsapp-wrap" id="mbteknoWhatsappWrap">
     <div class="mbtekno-whatsapp-menu" id="mbteknoWhatsappMenu" role="menu" aria-label="WhatsApp iletişim seçenekleri">
@@ -1803,9 +1899,14 @@
   var pageTransition = document.getElementById('mbteknoPageTransition');
   var contactForm = document.getElementById('mbteknoContactForm');
   var formService = document.getElementById('mbteknoFormService');
+  var successOverlay = document.getElementById('mbteknoSuccessOverlay');
+  var successModal = document.getElementById('mbteknoSuccessModal');
+  var successClose = document.getElementById('mbteknoSuccessClose');
+  var successOk = document.getElementById('mbteknoSuccessOk');
 
   var currentFilter = 'all';
   var isModalOpen = false;
+  var isSuccessModalOpen = false;
 
   /* ===== Helpers ===== */
   function renderCheck(val) {
@@ -1914,6 +2015,22 @@
         }
       });
     }
+  }
+
+  function closeSuccessModal() {
+    if (!successOverlay || !successModal) return;
+    successOverlay.classList.remove('mbtekno-open');
+    successModal.classList.remove('mbtekno-open');
+    body.classList.remove('mbtekno-no-scroll');
+    isSuccessModalOpen = false;
+  }
+
+  function openSuccessModal() {
+    if (!successOverlay || !successModal) return;
+    successOverlay.classList.add('mbtekno-open');
+    successModal.classList.add('mbtekno-open');
+    body.classList.add('mbtekno-no-scroll');
+    isSuccessModalOpen = true;
   }
 
   function closeModal() {
@@ -2068,7 +2185,10 @@
   modalOverlay.addEventListener('click', closeModal);
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && isModalOpen) closeModal();
+    if (e.key === 'Escape') {
+      if (isModalOpen) closeModal();
+      if (isSuccessModalOpen) closeSuccessModal();
+    }
   });
 
   themeToggle.addEventListener('click', toggleTheme);
@@ -2078,14 +2198,45 @@
   });
 
   if (contactForm) {
-    contactForm.addEventListener('submit', function () {
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
       var btn = contactForm.querySelector('button[type="submit"]');
+      var originalBtnHtml = btn ? btn.innerHTML : '';
+
       if (btn) {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
         btn.disabled = true;
       }
+
+      fetch('https://formsubmit.co/ajax/mbteknoinfo@gmail.com', {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (response) {
+          if (!response.ok) throw new Error('submit failed');
+          return response.json();
+        })
+        .then(function () {
+          contactForm.reset();
+          openSuccessModal();
+        })
+        .catch(function () {
+          alert('Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin veya doğrudan e-posta ile ulaşın.');
+        })
+        .finally(function () {
+          if (btn) {
+            btn.innerHTML = originalBtnHtml;
+            btn.disabled = false;
+          }
+        });
     });
   }
+
+  if (successClose) successClose.addEventListener('click', closeSuccessModal);
+  if (successOk) successOk.addEventListener('click', closeSuccessModal);
+  if (successOverlay) successOverlay.addEventListener('click', closeSuccessModal);
 
   var whatsappFab = document.getElementById('mbteknoWhatsappFab');
   var whatsappMenu = document.getElementById('mbteknoWhatsappMenu');
